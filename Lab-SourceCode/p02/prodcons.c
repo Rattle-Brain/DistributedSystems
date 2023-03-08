@@ -12,21 +12,31 @@ el que recibe debe mostrarlo por su salida standard.
 */
 #include <unistd.h>
 #include <stdio.h>
-int main()
+
+
+void main()
 {
     int fds[2];
     pipe(fds);                  /*Crea un pipe */
+	size_t cuantos;
+	int fd;
 	pid_t pid;
+
+	char buffer[100];
     /* Este proceso debera enviar el fichero al otro proceso a traves
        del pipe.
     */
-    if ((pid=fork()) == 0) {
+	if((fd=open()) < 0){
+		perror("");
+	}
+
+    if (fork() == 0) {
       /*Añadir algo */ 
     }
     /* Este otro proceso es el que se debe encargar de obtener el
        fichero del pipe y mostrarlo por su salida standard. 
     */
-    else if ((pid=fork()) == 0) {
+    else if ( fork() == 0) {
       /*Añadir algo */  
     }
     /*El padre cierra ambos descriptores del pipe
