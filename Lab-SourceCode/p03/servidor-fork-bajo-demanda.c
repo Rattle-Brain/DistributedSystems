@@ -20,12 +20,17 @@ int main(int argc, char* argv[]) {
 	char buffer[100];
 	int leidos;
 	pid_t pid;
+	int port;
+
+	if(argv[1] != NULL){
+		port = atoi(argv[1]);
+	}else { port = 7890; }
 
 	signal(SIGCHLD, atrapa_sigchld);
 	sock_pasivo = socket(PF_INET, SOCK_STREAM, 0);
 	d_local.sin_family = AF_INET;
 	d_local.sin_addr.s_addr = htonl(INADDR_ANY);
-	d_local.sin_port = htons(7890);
+	d_local.sin_port = htons(port);
 	bind(sock_pasivo, (struct sockaddr *)&d_local, sizeof(d_local));
 	listen(sock_pasivo, SOMAXCONN);
 	printf("Soy el proceso padre (%d) antes del while\n", getpid());
