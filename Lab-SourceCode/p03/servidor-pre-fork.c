@@ -9,6 +9,7 @@
 #include <sys/wait.h>
 #include <errno.h>
 
+// Nos aseguramos de que el hilo padre reconozca la muerte del hijo
 void atrapa_sigchld(int s){
 	wait(0);
 	return;
@@ -49,13 +50,14 @@ int main(int argc, char* argv[]) {
 	while (1) { // Bucle infinito de atención a clientes
 		printf("Soy el proceso (%d) antes del accept\n", getpid());
 		sock_datos = accept(sock_pasivo, 0, 0);
+		// Atiende al cliente mientras vengan datos
 		while ((leidos=read(sock_datos, buffer, sizeof(buffer))) > 0)
 		{
 
 			printf("Soy el proceso (%d) antes del write\n", getpid());
-			write(sock_datos, buffer, leidos);
+			write(sock_datos, buffer, leidos); // Escribe los datos
 			printf("Soy el proceso (%d) despues del write\n", getpid());
 		}
-		close(sock_datos);
+		close(sock_datos); // Cierra el socket de datos del proceso cuando termina
 	}
 }
