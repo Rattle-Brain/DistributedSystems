@@ -15,4 +15,5 @@ void main(){
 		perror("Error al abrir el fichero");
 		exit(1);
 	}
+
 }
