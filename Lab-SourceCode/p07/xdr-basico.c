@@ -1,12 +1,12 @@
 #include <stdio.h> // Para FILE*
 #include <errno.h> // para perror()
 #include <stdlib.h> // para exit()
-#include <rpc/types.h>
+#include <sys/types.h>
 #include <rpc/rpc.h>
 
-void main(){
-	int n;
-	char* cad;
+int main(){
+	int n = 100;
+	char cad = 'F';
 	FILE* fich;
 	XDR operacion;
 
@@ -15,5 +15,10 @@ void main(){
 		perror("Error al abrir el fichero");
 		exit(1);
 	}
-
+	xdrstdio_create(&operacion, fich, XDR_ENCODE);
+	xdr_int(&operacion, &n);
+	xdr_char(&operacion, &cad);
+	xdr_destroy(&operacion);
+	fclose(fich);
+	return 0;
 }
